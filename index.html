@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Rent & Sell — Propiedades en Costa Rica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════════════════ */
+:root {
+  --navy: #0A1628;
+  --navy-mid: #1B3A6B;
+  --navy-light: #2A4F8F;
+  --gold: #C9A84C;
+  --gold-light: #E8C86A;
+  --gold-pale: #F5E6B8;
+  --white: #FFFFFF;
+  --off-white: #F7F8FA;
+  --light: #EEF1F6;
+  --gray: #8899AA;
+  --dark-gray: #4A5568;
+  --dark: #1A202C;
+  --green: #2ECC71;
+  --red: #E74C3C;
+  --whatsapp: #25D366;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 40px rgba(10,22,40,0.18);
+  --shadow-xl: 0 20px 60px rgba(10,22,40,0.25);
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--off-white);
+  color: var(--dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+}
+
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: var(--font-body); border: none; outline: none; }
+input, select, textarea { font-family: var(--font-body); outline: none; }
+a { text-decoration: none; color: inherit; }
+
+/* ═══════════════════════════════════════════════════
+   PAGES SYSTEM
+═══════════════════════════════════════════════════ */
+.page { display: none; min-height: calc(100vh - 80px); animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ═══════════════════════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: var(--white);
+  display: flex; align-items: center;
+  padding: 8px 8px 20px;
+  border-top: 1px solid var(--light);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 3px; padding: 6px; border-radius: var(--radius-md);
+  background: none; transition: all 0.2s;
+  color: var(--gray);
+}
+.nav-item.active { color: var(--navy-mid); }
+.nav-item svg { width: 22px; height: 22px; }
+.nav-item span { font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+.nav-item-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--gold); margin-top: 2px;
+  display: none;
+}
+.nav-item.active .nav-item-dot { display: block; }
+
+.nav-publish {
+  flex: 0 0 64px; display: flex; align-items: center; justify-content: center;
+  margin-top: -20px;
+}
+.nav-publish-btn {
+  width: 58px; height: 58px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy-mid), var(--navy));
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(27,58,107,0.5);
+  border: 3px solid var(--white);
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: var(--white);
+}
+.nav-publish-btn:active { transform: scale(0.95); }
+.nav-publish-btn svg { width: 26px; height: 26px; }
+
+/* ═══════════════════════════════════════════════════
+   HOME PAGE
+═══════════════════════════════════════════════════ */
+.hero {
+  background: linear-gradient(165deg, var(--navy) 0%, var(--navy-mid) 100%);
+  padding: 24px 20px 32px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -40px; left: -40px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(42,79,143,0.4) 0%, transparent 70%);
+}
+
+.hero-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.hero-greeting { color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.hero-title {
+  font-family: var(--font-display); color: var(--white);
+  font-size: 28px; line-height: 1.15; letter-spacing: -0.5px;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 4px; }
+
+.hero-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(201,168,76,0.4);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); flex-shrink: 0;
+  cursor: pointer; transition: background 0.2s;
+}
+.hero-avatar:active { background: rgba(255,255,255,0.2); }
+
+.search-bar {
+  background: var(--white); border-radius: var(--radius-full);
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  box-shadow: var(--shadow-lg);
+  position: relative; z-index: 1;
+}
+.search-bar input {
+  flex: 1; border: none; background: none;
+  font-size: 14px; color: var(--dark);
+}
+.search-bar input::placeholder { color: var(--gray); }
+.search-bar svg { color: var(--gray); width: 18px; height: 18px; flex-shrink: 0; }
+
+.filter-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--navy); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.filter-btn.has-filters { background: var(--gold); }
+.filter-btn svg { width: 18px; height: 18px; color: var(--white); }
+.filter-badge {
+  position: absolute; top: -3px; right: -3px;
+  background: var(--red); color: var(--white);
+  width: 16px; height: 16px; border-radius: 50%;
+  font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 10px; padding: 16px 20px 0;
+}
+.stat-card {
+  flex: 1; background: var(--white); border-radius: var(--radius-md);
+  padding: 14px 12px; text-align: center;
+  box-shadow: var(--shadow-sm);
+  animation: slideUp 0.4s ease both;
+}
+.stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stat-card:nth-child(3) { animation-delay: 0.2s; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.stat-num { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--navy); }
+.stat-label { font-size: 10px; color: var(--gray); font-weight: 500; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Op tabs */
+.op-tabs { display: flex; padding: 16px 20px 8px; gap: 8px; }
+.op-tab {
+  flex: 1; padding: 10px; text-align: center;
+  border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
+  background: var(--white); color: var(--gray);
+  border: 1.5px solid var(--light);
+  transition: all 0.2s;
+}
+.op-tab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+/* Categories */
+.cats-scroll { overflow-x: auto; padding: 0 20px 4px; display: flex; gap: 8px; scrollbar-width: none; }
+.cats-scroll::-webkit-scrollbar { display: none; }
+.cat-chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: var(--radius-full);
+  white-space: nowrap; font-size: 13px; font-weight: 600;
+  background: var(--white); color: var(--navy-mid);
+  border: 1.5px solid var(--light);
+  transition: all 0.2s; flex-shrink: 0;
+}
+.cat-chip.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.cat-chip svg { width: 14px; height: 14px; }
+
+/* Section header */
+.section-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px 10px; }
+.section-title { font-size: 17px; font-weight: 700; color: var(--dark); }
+.section-count { font-size: 12px; color: var(--gray); font-weight: 500; }
+
+/* Property cards */
+.cards-list { padding: 0 20px; display: flex; flex-direction: column; gap: 16px; }
+
+.prop-card {
+  background: var(--white); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-md);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer; animation: slideUp 0.4s ease both;
+}
+.prop-card:active { transform: scale(0.98); }
+
+.card-img-wrap { position: relative; height: 200px; overflow: hidden; }
+.card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.prop-card:active .card-img { transform: scale(1.03); }
+
+.card-gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(10,22,40,0.88) 100%);
+}
+.card-top-tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; }
+.card-tag {
+  padding: 4px 10px; border-radius: var(--radius-full);
+  font-size: 11px; font-weight: 700; color: var(--white);
+}
+.tag-venta { background: var(--gold); color: var(--navy); }
+.tag-alquiler { background: var(--navy-mid); }
+.tag-destacado {
+  background: rgba(255,255,255,0.95); color: var(--navy);
+  display: flex; align-items: center; gap: 3px;
+}
+.tag-destacado svg { width: 10px; height: 10px; color: var(--gold); }
+
+.fav-btn {
+  position: absolute; top: 10px; right: 10px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; backdrop-filter: blur(4px);
+}
+.fav-btn svg { width: 18px; height: 18px; color: var(--white); }
+.fav-btn.active svg { color: var(--red); fill: var(--red); }
+
+.card-price {
+  position: absolute; bottom: 12px; left: 12px;
+  font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--white);
+}
+.card-price-per { font-size: 13px; font-weight: 400; opacity: 0.8; }
+
+.card-body { padding: 14px; }
+.card-type-row { display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
+.card-type { font-size: 10px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; }
+.card-title { font-size: 16px; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 6px; }
+.card-location { display: flex; align-items: center; gap: 4px; color: var(--gray); font-size: 12px; margin-bottom: 12px; }
+.card-location svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.card-features { display: flex; gap: 16px; padding-top: 12px; border-top: 1px solid var(--light); }
+.feat { display: flex; align-items: center; gap: 4px; color: var(--dark-gray); font-size: 12px; font-weight: 600; }
+.feat svg { width: 14px; height: 14px; color: var(--navy-mid); }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 60px 30px; }
+.empty-state svg { width: 64px; height: 64px; color: var(--light); margin: 0 auto 16px; }
+.empty-state h3 { font-size: 18px; font-weight: 700; color: var(--dark-gray); margin-bottom: 8px; }
+.empty-state p { font-size: 14px; color: var(--gray); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════════════
+   DETAIL PAGE
+═══════════════════════════════════════════════════ */
+.detail-gallery { position: relative; height: 280px; overflow: hidden; }
+.detail-gallery img { width: 100%; height: 100%; object-fit: cover; }
+.detail-gallery-gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 40%, transparent 60%, rgba(10,22,40,0.7) 100%);
+}
+.detail-back {
+  position: absolute; top: 16px; left: 16px;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px); transition: background 0.2s;
+  color: var(--white);
+}
+.detail-actions {
+  position: absolute; top: 16px; right: 16px;
+  display: flex; gap: 8px;
+}
+.detail-action-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px); color: var(--white);
+}
+.detail-badges { position: absolute; bottom: 16px; left: 16px; display: flex; gap: 8px; }
+.detail-dots { position: absolute; bottom: 16px; right: 16px; display: flex; gap: 4px; }
+.detail-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); transition: all 0.2s; }
+.detail-dot.active { background: var(--white); width: 14px; border-radius: 3px; }
+
+.detail-content { padding: 20px; }
+.detail-price-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.detail-price { font-family: var(--font-display); font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -1px; }
+.detail-price-per { font-size: 14px; color: var(--gray); font-weight: 400; }
+.detail-type-tag {
+  background: var(--off-white); padding: 6px 14px;
+  border-radius: var(--radius-full); font-size: 12px; font-weight: 600;
+  color: var(--dark-gray); border: 1px solid var(--light);
+}
+.detail-title { font-size: 20px; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 8px; }
+.detail-location { display: flex; align-items: center; gap: 4px; color: var(--gray); font-size: 13px; margin-bottom: 20px; }
+.detail-location svg { width: 14px; height: 14px; color: var(--gold); }
+
+.detail-features {
+  display: flex; justify-content: space-around;
+  background: var(--off-white); border-radius: var(--radius-lg);
+  padding: 16px; margin-bottom: 20px;
+}
+.detail-feat { text-align: center; }
+.detail-feat svg { width: 22px; height: 22px; color: var(--gold); margin: 0 auto 4px; }
+.detail-feat-val { font-size: 17px; font-weight: 700; color: var(--dark); }
+.detail-feat-label { font-size: 11px; color: var(--gray); }
+
+.detail-section { margin-bottom: 20px; }
+.detail-section-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+.detail-desc { font-size: 14px; color: var(--dark-gray); line-height: 1.7; }
+
+.amenidades-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.amenidad-chip {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border-radius: var(--radius-full);
+  background: var(--off-white); border: 1px solid var(--light);
+  font-size: 12px; font-weight: 500; color: var(--dark-gray);
+}
+.amenidad-chip svg { width: 13px; height: 13px; color: var(--green); }
+
+.publisher-card {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--off-white); border-radius: var(--radius-lg); padding: 14px;
+}
+.publisher-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--navy-mid); display: flex; align-items: center; justify-content: center;
+  color: var(--white); font-size: 18px; font-weight: 700; flex-shrink: 0;
+}
+.publisher-name { font-size: 15px; font-weight: 700; color: var(--dark); }
+.publisher-label { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+.contact-bar {
+  position: sticky; bottom: 80px;
+  background: var(--white); padding: 14px 20px 14px;
+  display: flex; gap: 10px;
+  border-top: 1px solid var(--light);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.call-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; border-radius: var(--radius-full);
+  border: 2px solid var(--navy-mid); background: none;
+  color: var(--navy-mid); font-size: 14px; font-weight: 700;
+  transition: all 0.2s;
+}
+.call-btn svg { width: 20px; height: 20px; }
+.wa-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px; border-radius: var(--radius-full);
+  background: var(--whatsapp); color: var(--white);
+  font-size: 14px; font-weight: 700;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+  transition: all 0.2s;
+}
+.wa-btn svg { width: 20px; height: 20px; }
+.wa-btn:active { transform: scale(0.97); }
+
+/* ═══════════════════════════════════════════════════
+   PUBLISH PAGE
+═══════════════════════════════════════════════════ */
+.publish-header {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  padding: 20px 20px 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.publish-back { color: var(--white); background: rgba(255,255,255,0.12); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.publish-header-text h2 { color: var(--white); font-size: 18px; font-weight: 700; }
+.publish-header-text p { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 2px; }
+
+/* Step indicator */
+.step-bar { display: flex; align-items: center; padding: 20px; gap: 0; }
+.step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+.step-circle {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--light); color: var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; transition: all 0.3s;
+}
+.step.done .step-circle { background: var(--gold); color: var(--navy); }
+.step.active .step-circle { background: var(--navy-mid); color: var(--white); }
+.step-label { font-size: 10px; color: var(--gray); margin-top: 4px; font-weight: 600; text-align: center; }
+.step.active .step-label { color: var(--navy-mid); }
+.step-line { flex: 1; height: 2px; background: var(--light); margin-bottom: 18px; transition: background 0.3s; }
+.step-line.done { background: var(--gold); }
+
+.step-content { padding: 0 20px 20px; display: none; }
+.step-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+.form-section-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 14px; margin-top: 6px; }
+
+.chips-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.form-chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 14px; border-radius: var(--radius-full);
+  border: 1.5px solid var(--light); background: var(--white);
+  font-size: 13px; font-weight: 600; color: var(--dark-gray);
+  transition: all 0.2s; cursor: pointer;
+}
+.form-chip svg { width: 14px; height: 14px; }
+.form-chip.selected { background: var(--navy-mid); border-color: var(--navy-mid); color: var(--white); }
+
+.input-group { margin-bottom: 14px; }
+.input-label { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 6px; display: block; }
+.input-field {
+  width: 100%; padding: 13px 14px;
+  border: 1.5px solid var(--light); border-radius: var(--radius-md);
+  font-size: 14px; color: var(--dark); background: var(--white);
+  transition: border-color 0.2s;
+}
+.input-field:focus { border-color: var(--navy-mid); }
+.input-field::placeholder { color: var(--gray); }
+textarea.input-field { height: 100px; resize: none; }
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.currency-toggle { display: flex; gap: 6px; }
+.currency-btn {
+  flex: 1; padding: 13px; border-radius: var(--radius-md);
+  border: 1.5px solid var(--light); background: var(--white);
+  font-size: 18px; font-weight: 700; color: var(--dark-gray);
+  transition: all 0.2s;
+}
+.currency-btn.selected { background: var(--navy-mid); border-color: var(--navy-mid); color: var(--white); }
+
+/* Photos upload */
+.photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.photo-slot {
+  aspect-ratio: 1; border-radius: var(--radius-md);
+  border: 2px dashed var(--light); background: var(--off-white);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; cursor: pointer; position: relative; overflow: hidden;
+  transition: border-color 0.2s;
+}
+.photo-slot:active { border-color: var(--navy-mid); }
+.photo-slot svg { width: 24px; height: 24px; color: var(--gray); }
+.photo-slot span { font-size: 10px; color: var(--gray); font-weight: 600; }
+.photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo-main-badge {
+  position: absolute; bottom: 4px; left: 4px;
+  background: var(--gold); color: var(--navy); font-size: 8px; font-weight: 700;
+  padding: 2px 6px; border-radius: 4px;
+}
+.photo-remove {
+  position: absolute; top: 4px; right: 4px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+}
+.photo-remove svg { width: 12px; height: 12px; }
+
+.hint-text { font-size: 12px; color: var(--gray); line-height: 1.6; margin-bottom: 16px; }
+
+/* Step nav */
+.step-nav { display: flex; gap: 10px; padding: 0 20px 20px; }
+.btn-next {
+  flex: 1; padding: 14px; border-radius: var(--radius-full);
+  background: var(--gold); color: var(--navy);
+  font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+  transition: all 0.2s;
+}
+.btn-next:active { transform: scale(0.97); }
+.btn-next svg { width: 18px; height: 18px; }
+.btn-publish {
+  flex: 1; padding: 14px; border-radius: var(--radius-full);
+  background: var(--green); color: var(--white);
+  font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 20px rgba(46,204,113,0.35);
+  transition: all 0.2s;
+}
+.btn-publish:active { transform: scale(0.97); }
+.btn-back-step {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid var(--light); background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--dark-gray); flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   FAVORITES PAGE
+═══════════════════════════════════════════════════ */
+.page-header {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  padding: 20px 20px 24px;
+}
+.page-header h2 { color: var(--white); font-family: var(--font-display); font-size: 24px; font-weight: 800; }
+.page-header p { color: var(--gold); font-size: 13px; margin-top: 4px; font-weight: 500; }
+
+/* ═══════════════════════════════════════════════════
+   PROFILE PAGE
+═══════════════════════════════════════════════════ */
+.profile-header {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  padding: 24px 20px; text-align: center;
+}
+.profile-avatar-wrap { position: relative; display: inline-block; margin-bottom: 12px; }
+.profile-avatar {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 30px; font-weight: 800; color: var(--navy);
+  border: 3px solid rgba(255,255,255,0.25);
+  margin: 0 auto;
+}
+.profile-name { color: var(--white); font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+.profile-email { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px; }
+.profile-stats {
+  display: flex; gap: 0;
+  background: rgba(255,255,255,0.1); border-radius: var(--radius-lg);
+  margin-top: 16px; overflow: hidden;
+}
+.profile-stat { flex: 1; padding: 12px 8px; text-align: center; }
+.profile-stat + .profile-stat { border-left: 1px solid rgba(255,255,255,0.15); }
+.profile-stat-num { color: var(--gold); font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+.profile-stat-label { color: rgba(255,255,255,0.6); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+.profile-section { padding: 16px 20px; }
+.profile-section-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 12px; }
+
+.publish-big-btn {
+  width: 100%; padding: 14px; border-radius: var(--radius-full);
+  background: var(--gold); color: var(--navy);
+  font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+.publish-big-btn svg { width: 20px; height: 20px; }
+
+.my-listing-card {
+  display: flex; background: var(--white); border-radius: var(--radius-lg);
+  overflow: hidden; margin-bottom: 10px; box-shadow: var(--shadow-sm);
+  cursor: pointer; transition: transform 0.2s;
+}
+.my-listing-card:active { transform: scale(0.98); }
+.my-listing-img { width: 80px; height: 80px; object-fit: cover; flex-shrink: 0; }
+.my-listing-info { flex: 1; padding: 10px 12px; }
+.my-listing-tag { display: inline-block; padding: 2px 8px; border-radius: var(--radius-full); font-size: 9px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.my-listing-title { font-size: 13px; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 2px; }
+.my-listing-price { font-size: 12px; font-weight: 700; color: var(--navy-mid); }
+.my-listing-location { font-size: 11px; color: var(--gray); }
+.my-listing-delete { padding: 0 12px; display: flex; align-items: center; justify-content: center; }
+.my-listing-delete svg { width: 18px; height: 18px; color: var(--red); }
+
+.menu-item {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--white); padding: 14px 16px;
+  border-radius: var(--radius-md); margin-bottom: 8px;
+  box-shadow: var(--shadow-sm); cursor: pointer;
+  transition: background 0.2s;
+}
+.menu-item:active { background: var(--off-white); }
+.menu-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--off-white); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.menu-icon svg { width: 18px; height: 18px; color: var(--navy-mid); }
+.menu-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--dark); }
+.menu-arrow svg { width: 16px; height: 16px; color: var(--gray); }
+
+.logout-btn {
+  width: 100%; padding: 14px; border-radius: var(--radius-full);
+  border: 1.5px solid var(--red); background: none;
+  color: var(--red); font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 8px;
+}
+.logout-btn svg { width: 18px; height: 18px; }
+.version-text { text-align: center; color: var(--gray); font-size: 11px; margin-top: 16px; padding-bottom: 20px; }
+
+/* Not logged in state */
+.not-auth {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 30px; text-align: center; min-height: 60vh;
+}
+.not-auth svg { width: 72px; height: 72px; color: var(--light); margin-bottom: 16px; }
+.not-auth h3 { font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+.not-auth p { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 24px; }
+.btn-login-big {
+  width: 100%; padding: 14px; border-radius: var(--radius-full);
+  background: var(--navy); color: var(--white);
+  font-size: 15px; font-weight: 700; margin-bottom: 10px;
+}
+.btn-register-big {
+  width: 100%; padding: 14px; border-radius: var(--radius-full);
+  border: 2px solid var(--navy); background: none;
+  color: var(--navy); font-size: 15px; font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(3px);
+  display: flex; align-items: flex-end;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal-sheet {
+  background: var(--white); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  width: 100%; max-height: 92vh; overflow-y: auto;
+  transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
+  padding-bottom: 30px;
+}
+.modal-overlay.open .modal-sheet { transform: translateY(0); }
+
+.modal-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--light); margin: 12px auto 0; }
+
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--light); }
+.modal-title { font-size: 17px; font-weight: 700; color: var(--dark); }
+.modal-close { width: 32px; height: 32px; border-radius: 50%; background: var(--off-white); display: flex; align-items: center; justify-content: center; }
+.modal-close svg { width: 16px; height: 16px; color: var(--dark); }
+.modal-clear { font-size: 14px; font-weight: 700; color: var(--gold); }
+
+.modal-body { padding: 16px 20px; }
+
+/* Auth modal */
+.auth-logo { text-align: center; padding: 20px 0 10px; }
+.auth-logo-icon {
+  width: 64px; height: 64px; border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px;
+}
+.auth-logo-icon svg { width: 32px; height: 32px; color: var(--gold); }
+.auth-logo h2 { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--navy); }
+.auth-logo p { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+.auth-tabs { display: flex; background: var(--off-white); border-radius: var(--radius-md); padding: 4px; margin-bottom: 20px; }
+.auth-tab { flex: 1; padding: 10px; text-align: center; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--gray); transition: all 0.2s; cursor: pointer; }
+.auth-tab.active { background: var(--white); color: var(--navy); box-shadow: var(--shadow-sm); }
+
+.input-with-icon { position: relative; }
+.input-with-icon svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--gray); }
+.input-with-icon input { padding-left: 38px !important; }
+.input-eye { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--gray); }
+.input-eye svg { width: 16px; height: 16px; }
+
+.forgot-link { text-align: right; margin-top: -8px; margin-bottom: 16px; }
+.forgot-link a { font-size: 12px; color: var(--gold); font-weight: 600; }
+
+.auth-submit {
+  width: 100%; padding: 14px; border-radius: var(--radius-full);
+  background: var(--navy); color: var(--white);
+  font-size: 15px; font-weight: 700; margin-top: 4px;
+  box-shadow: 0 4px 20px rgba(10,22,40,0.3);
+  transition: all 0.2s;
+}
+.auth-submit:active { transform: scale(0.98); }
+
+.divider-or { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
+.divider-or::before, .divider-or::after { content: ''; flex: 1; height: 1px; background: var(--light); }
+.divider-or span { font-size: 12px; color: var(--gray); font-weight: 500; }
+
+.terms-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+.checkbox-custom { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--light); flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; cursor: pointer; transition: all 0.2s; }
+.checkbox-custom.checked { background: var(--navy-mid); border-color: var(--navy-mid); }
+.checkbox-custom svg { width: 12px; height: 12px; color: var(--white); }
+.terms-text { font-size: 12px; color: var(--gray); line-height: 1.6; }
+.terms-text a { color: var(--gold); font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════
+   FILTER MODAL SPECIFIC
+═══════════════════════════════════════════════════ */
+.filter-section-title { font-size: 14px; font-weight: 700; color: var(--dark); margin: 14px 0 8px; }
+
+.apply-filter-btn {
+  width: 100%; padding: 14px; border-radius: var(--radius-full);
+  background: var(--gold); color: var(--navy);
+  font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 8px;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+}
+
+/* ═══════════════════════════════════════════════════
+   SUCCESS TOAST
+═══════════════════════════════════════════════════ */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px);
+  background: var(--dark); color: var(--white);
+  padding: 12px 20px; border-radius: var(--radius-full);
+  font-size: 14px; font-weight: 600; z-index: 999;
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+  white-space: nowrap; display: flex; align-items: center; gap: 8px;
+  box-shadow: var(--shadow-xl);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast svg { width: 16px; height: 16px; }
+.toast.success { background: var(--green); }
+.toast.error { background: var(--red); }
+
+/* ═══════════════════════════════════════════════════
+   LOADING
+═══════════════════════════════════════════════════ */
+.loader { text-align: center; padding: 40px; }
+.spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3px solid var(--light);
+  border-top-color: var(--navy-mid);
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════════════
+   MISC
+═══════════════════════════════════════════════════ */
+.spacer-bottom { height: 20px; }
+
+svg-icon { display: inline-flex; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     HOME PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="hero-greeting" id="greeting">Buenos días 👋</div>
+        <h1 class="hero-title">Encuentra tu<br><span>hogar ideal</span></h1>
+        <div class="hero-subtitle" id="hero-count">Cargando propiedades...</div>
+      </div>
+      <div class="hero-avatar" onclick="goToProfile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar por título, zona..." oninput="filterProps()">
+      <div style="position:relative">
+        <button class="filter-btn" id="filter-btn" onclick="openFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        </button>
+        <div class="filter-badge" id="filter-badge" style="display:none">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Propiedades</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-venta">—</div><div class="stat-label">En venta</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-alquiler">—</div><div class="stat-label">En alquiler</div></div>
+  </div>
+
+  <!-- Op tabs -->
+  <div class="op-tabs">
+    <button class="op-tab active" data-op="" onclick="setOpTab(this)">Todos</button>
+    <button class="op-tab" data-op="Venta" onclick="setOpTab(this)">Venta</button>
+    <button class="op-tab" data-op="Alquiler" onclick="setOpTab(this)">Alquiler</button>
+  </div>
+
+  <!-- Categories -->
+  <div class="cats-scroll">
+    <button class="cat-chip active" data-cat="" onclick="setCat(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Todo
+    </button>
+    <button class="cat-chip" data-cat="Casa" onclick="setCat(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Casas
+    </button>
+    <button class="cat-chip" data-cat="Apartamento" onclick="setCat(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="2" width="18" height="20" rx="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="15" y1="22" x2="15" y2="2"/></svg>
+      Aptos
+    </button>
+    <button class="cat-chip" data-cat="Terreno" onclick="setCat(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l4-8 4 4 4-6 4 10"/><line x1="3" y1="21" x2="21" y2="21"/></svg>
+      Terrenos
+    </button>
+    <button class="cat-chip" data-cat="Local" onclick="setCat(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      Locales
+    </button>
+    <button class="cat-chip" data-cat="Finca" onclick="setCat(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12c0-2.76 1.12-5.26 2.93-7.07"/><path d="M12 6v6l4 2"/></svg>
+      Fincas
+    </button>
+  </div>
+
+  <!-- Section header -->
+  <div class="section-header">
+    <span class="section-title" id="section-title">Todas las propiedades</span>
+    <span class="section-count" id="section-count">0 resultados</span>
+  </div>
+
+  <!-- Cards -->
+  <div class="cards-list" id="cards-list">
+    <div class="loader"><div class="spinner"></div></div>
+  </div>
+  <div class="spacer-bottom"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     DETAIL PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-detail" class="page">
+  <div class="detail-gallery" id="detail-gallery">
+    <img id="detail-main-img" src="" alt="">
+    <div class="detail-gallery-gradient"></div>
+    <button class="detail-back" onclick="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="detail-actions">
+      <button class="detail-action-btn" onclick="shareProperty()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <button class="detail-action-btn" id="detail-fav-btn" onclick="toggleDetailFav()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+    </div>
+    <div class="detail-badges" id="detail-badges"></div>
+    <div class="detail-dots" id="detail-dots"></div>
+  </div>
+
+  <div class="detail-content">
+    <div class="detail-price-row">
+      <div>
+        <div class="detail-price" id="detail-price"></div>
+      </div>
+      <div class="detail-type-tag" id="detail-type-tag"></div>
+    </div>
+    <div class="detail-title" id="detail-title"></div>
+    <div class="detail-location" id="detail-location">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span id="detail-location-text"></span>
+    </div>
+
+    <div class="detail-features" id="detail-features"></div>
+
+    <div class="detail-section" id="detail-desc-section">
+      <div class="detail-section-title">Descripción</div>
+      <div class="detail-desc" id="detail-desc"></div>
+    </div>
+
+    <div class="detail-section" id="detail-amenidades-section" style="display:none">
+      <div class="detail-section-title">Amenidades</div>
+      <div class="amenidades-grid" id="detail-amenidades"></div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title">Publicado por</div>
+      <div class="publisher-card">
+        <div class="publisher-avatar" id="publisher-avatar"></div>
+        <div>
+          <div class="publisher-name" id="publisher-name"></div>
+          <div class="publisher-label">Publicador en Rent & Sell</div>
+        </div>
+      </div>
+    </div>
+    <div style="height: 100px"></div>
+  </div>
+
+  <div class="contact-bar">
+    <button class="call-btn" id="call-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.59 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Llamar
+    </button>
+    <button class="wa-btn" id="wa-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      Contactar por WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PUBLISH PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-publish" class="page">
+  <div class="publish-header">
+    <button class="publish-back" onclick="navigate('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="publish-header-text">
+      <h2>Publicar propiedad</h2>
+      <p id="step-subtitle">Tipo de propiedad</p>
+    </div>
+    <span id="step-counter" style="color:rgba(255,255,255,0.5);font-size:13px;font-weight:600;margin-left:auto">1/4</span>
+  </div>
+
+  <!-- Step bar -->
+  <div class="step-bar">
+    <div class="step active" id="step-1"><div class="step-circle">1</div><div class="step-label">Tipo</div></div>
+    <div class="step-line" id="line-1"></div>
+    <div class="step" id="step-2"><div class="step-circle">2</div><div class="step-label">Detalles</div></div>
+    <div class="step-line" id="line-2"></div>
+    <div class="step" id="step-3"><div class="step-circle">3</div><div class="step-label">Ubicación</div></div>
+    <div class="step-line" id="line-3"></div>
+    <div class="step" id="step-4"><div class="step-circle">4</div><div class="step-label">Fotos</div></div>
+  </div>
+
+  <!-- Step 1: Tipo -->
+  <div class="step-content active" id="s1">
+    <div class="form-section-title">¿Qué quieres hacer?</div>
+    <div class="chips-grid">
+      <button class="form-chip" data-field="tipo_operacion" data-val="Venta" onclick="selectChip(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Venta
+      </button>
+      <button class="form-chip" data-field="tipo_operacion" data-val="Alquiler" onclick="selectChip(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        Alquiler
+      </button>
+    </div>
+
+    <div class="form-section-title">Tipo de inmueble</div>
+    <div class="chips-grid">
+      <button class="form-chip" data-field="tipo_inmueble" data-val="Casa" onclick="selectChip(this)">🏠 Casa</button>
+      <button class="form-chip" data-field="tipo_inmueble" data-val="Apartamento" onclick="selectChip(this)">🏢 Apartamento</button>
+      <button class="form-chip" data-field="tipo_inmueble" data-val="Local" onclick="selectChip(this)">🏪 Local</button>
+      <button class="form-chip" data-field="tipo_inmueble" data-val="Terreno" onclick="selectChip(this)">🌿 Terreno</button>
+      <button class="form-chip" data-field="tipo_inmueble" data-val="Finca" onclick="selectChip(this)">🌾 Finca</button>
+      <button class="form-chip" data-field="tipo_inmueble" data-val="Bodega" onclick="selectChip(this)">🏭 Bodega</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Detalles -->
+  <div class="step-content" id="s2">
+    <div class="input-group">
+      <label class="input-label">Título del anuncio *</label>
+      <input class="input-field" id="f-titulo" placeholder="Ej: Casa de 3 cuartos en Escazú con jardín" maxlength="100">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Descripción *</label>
+      <textarea class="input-field" id="f-descripcion" placeholder="Describe la propiedad: características, estado, vecindario..." maxlength="1000"></textarea>
+    </div>
+    <div class="row-2">
+      <div class="input-group">
+        <label class="input-label">Precio *</label>
+        <input class="input-field" id="f-precio" type="number" placeholder="0">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Moneda</label>
+        <div class="currency-toggle">
+          <button class="currency-btn selected" data-val="USD" onclick="setCurrency(this)">$</button>
+          <button class="currency-btn" data-val="CRC" onclick="setCurrency(this)">₡</button>
+        </div>
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="input-group">
+        <label class="input-label">Habitaciones</label>
+        <input class="input-field" id="f-habitaciones" type="number" placeholder="3">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Baños</label>
+        <input class="input-field" id="f-banos" type="number" placeholder="2">
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="input-group">
+        <label class="input-label">Parqueos</label>
+        <input class="input-field" id="f-parqueos" type="number" placeholder="1">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Área (m²)</label>
+        <input class="input-field" id="f-area" type="number" placeholder="120">
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Ubicación -->
+  <div class="step-content" id="s3">
+    <div class="form-section-title">Provincia *</div>
+    <div class="chips-grid" id="prov-chips">
+      <button class="form-chip" data-field="provincia" data-val="San José" onclick="selectChip(this)">San José</button>
+      <button class="form-chip" data-field="provincia" data-val="Alajuela" onclick="selectChip(this)">Alajuela</button>
+      <button class="form-chip" data-field="provincia" data-val="Cartago" onclick="selectChip(this)">Cartago</button>
+      <button class="form-chip" data-field="provincia" data-val="Heredia" onclick="selectChip(this)">Heredia</button>
+      <button class="form-chip" data-field="provincia" data-val="Guanacaste" onclick="selectChip(this)">Guanacaste</button>
+      <button class="form-chip" data-field="provincia" data-val="Puntarenas" onclick="selectChip(this)">Puntarenas</button>
+      <button class="form-chip" data-field="provincia" data-val="Limón" onclick="selectChip(this)">Limón</button>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Cantón</label>
+      <input class="input-field" id="f-canton" placeholder="Ej: Escazú">
+    </div>
+    <div class="input-group">
+      <label class="input-label">Tu nombre *</label>
+      <input class="input-field" id="f-nombre" placeholder="Tu nombre completo">
+    </div>
+    <div class="input-group">
+      <label class="input-label">WhatsApp para contacto *</label>
+      <input class="input-field" id="f-whatsapp" type="tel" placeholder="88001234">
+      <div class="hint-text" style="margin-top:6px">💡 Los interesados te contactarán directamente a este número</div>
+    </div>
+  </div>
+
+  <!-- Step 4: Fotos -->
+  <div class="step-content" id="s4">
+    <div class="form-section-title">Fotos de la propiedad *</div>
+    <div class="hint-text">Agrega hasta 5 fotos. La primera será la imagen principal.</div>
+    <div class="photos-grid" id="photos-grid">
+      <div class="photo-slot" onclick="addPhoto(0)" id="photo-0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Agregar</span>
+      </div>
+      <div class="photo-slot" onclick="addPhoto(1)" id="photo-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Foto 2</span>
+      </div>
+      <div class="photo-slot" onclick="addPhoto(2)" id="photo-2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Foto 3</span>
+      </div>
+    </div>
+
+    <div class="form-section-title">Amenidades</div>
+    <div class="chips-grid" id="amenidades-chips">
+      <button class="form-chip" data-field="amenidades" data-val="Piscina" onclick="toggleAmenidad(this)">🏊 Piscina</button>
+      <button class="form-chip" data-field="amenidades" data-val="Jardín" onclick="toggleAmenidad(this)">🌳 Jardín</button>
+      <button class="form-chip" data-field="amenidades" data-val="Seguridad 24h" onclick="toggleAmenidad(this)">🔒 Seguridad 24h</button>
+      <button class="form-chip" data-field="amenidades" data-val="Gimnasio" onclick="toggleAmenidad(this)">💪 Gimnasio</button>
+      <button class="form-chip" data-field="amenidades" data-val="Balcón" onclick="toggleAmenidad(this)">🏗️ Balcón</button>
+      <button class="form-chip" data-field="amenidades" data-val="Vista al mar" onclick="toggleAmenidad(this)">🌊 Vista al mar</button>
+      <button class="form-chip" data-field="amenidades" data-val="Jacuzzi" onclick="toggleAmenidad(this)">♨️ Jacuzzi</button>
+      <button class="form-chip" data-field="amenidades" data-val="Paneles solares" onclick="toggleAmenidad(this)">☀️ Paneles solares</button>
+      <button class="form-chip" data-field="amenidades" data-val="Fibra óptica" onclick="toggleAmenidad(this)">📡 Fibra óptica</button>
+      <button class="form-chip" data-field="amenidades" data-val="Cerca de escuelas" onclick="toggleAmenidad(this)">🏫 Cerca escuelas</button>
+    </div>
+  </div>
+
+  <!-- Nav buttons -->
+  <div class="step-nav" id="step-nav">
+    <button class="btn-back-step" id="btn-prev" onclick="prevStep()" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="btn-next" id="btn-next" onclick="nextStep()">
+      Continuar
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+  <div class="spacer-bottom"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FAVORITES PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-favorites" class="page">
+  <div class="page-header">
+    <h2>Mis Favoritos</h2>
+    <p id="fav-count-text">0 propiedades guardadas</p>
+  </div>
+  <div class="cards-list" id="fav-list" style="padding-top:16px">
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <h3>Sin favoritos aún</h3>
+      <p>Toca el ❤️ en cualquier propiedad para guardarla aquí</p>
+    </div>
+  </div>
+  <div class="spacer-bottom"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PROFILE PAGE
+═══════════════════════════════════════════════════ -->
+<div id="page-profile" class="page">
+  <!-- Not logged in -->
+  <div id="profile-not-auth">
+    <div class="page-header"><h2>Mi Perfil</h2></div>
+    <div class="not-auth">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <h3>Mi Perfil</h3>
+      <p>Inicia sesión para ver tu perfil, publicar propiedades y guardar favoritos</p>
+      <button class="btn-login-big" onclick="openAuth('login')">Iniciar sesión</button>
+      <button class="btn-register-big" onclick="openAuth('register')">Crear cuenta gratis</button>
+    </div>
+  </div>
+
+  <!-- Logged in -->
+  <div id="profile-auth" style="display:none">
+    <div class="profile-header">
+      <div class="profile-avatar" id="profile-avatar-text">U</div>
+      <div class="profile-name" id="profile-name-text">Usuario</div>
+      <div class="profile-email" id="profile-email-text">correo@email.com</div>
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-num" id="pstat-total">0</div>
+          <div class="profile-stat-label">Anuncios</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-num" id="pstat-activos">0</div>
+          <div class="profile-stat-label">Activos</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-num" id="pstat-destacados">0</div>
+          <div class="profile-stat-label">Destacados</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <button class="publish-big-btn" onclick="navigate('publish')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Publicar nueva propiedad
+      </button>
+
+      <div class="profile-section-title">Mis anuncios</div>
+      <div id="my-listings"></div>
+
+      <div class="profile-section-title" style="margin-top:20px">Configuración</div>
+      <div class="menu-item">
+        <div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <span class="menu-text">Centro de ayuda</span>
+        <div class="menu-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <span class="menu-text">Términos y condiciones</span>
+        <div class="menu-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <span class="menu-text">Calificar la app</span>
+        <div class="menu-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <button class="logout-btn" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+      <div class="version-text">Rent & Sell v1.0.0 — Costa Rica 🇨🇷</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     BOTTOM NAV
+═══════════════════════════════════════════════════ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-home" onclick="navigate('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Inicio</span>
+    <div class="nav-item-dot"></div>
+  </button>
+  <button class="nav-item" id="nav-favorites" onclick="navigate('favorites')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <span>Favoritos</span>
+    <div class="nav-item-dot"></div>
+  </button>
+  <div class="nav-publish">
+    <button class="nav-publish-btn" onclick="navigate('publish')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+  <button class="nav-item" id="nav-profile" onclick="navigate('profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Perfil</span>
+    <div class="nav-item-dot"></div>
+  </button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════════════ -->
+
+<!-- Filter Modal -->
+<div class="modal-overlay" id="filter-modal" onclick="closeOnBackdrop(event,'filter-modal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <button class="modal-clear" onclick="clearFilters()">Limpiar</button>
+      <span class="modal-title">Filtros</span>
+      <button class="modal-close" onclick="closeModal('filter-modal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="filter-section-title">¿Qué buscas?</div>
+      <div class="chips-grid">
+        <button class="form-chip" data-filter="tipo_operacion" data-val="Venta" onclick="setFilter(this)">🏷️ Venta</button>
+        <button class="form-chip" data-filter="tipo_operacion" data-val="Alquiler" onclick="setFilter(this)">🔑 Alquiler</button>
+      </div>
+      <div class="filter-section-title">Tipo de inmueble</div>
+      <div class="chips-grid">
+        <button class="form-chip" data-filter="tipo_inmueble" data-val="Casa" onclick="setFilter(this)">🏠 Casa</button>
+        <button class="form-chip" data-filter="tipo_inmueble" data-val="Apartamento" onclick="setFilter(this)">🏢 Apto</button>
+        <button class="form-chip" data-filter="tipo_inmueble" data-val="Terreno" onclick="setFilter(this)">🌿 Terreno</button>
+        <button class="form-chip" data-filter="tipo_inmueble" data-val="Local" onclick="setFilter(this)">🏪 Local</button>
+        <button class="form-chip" data-filter="tipo_inmueble" data-val="Finca" onclick="setFilter(this)">🌾 Finca</button>
+      </div>
+      <div class="filter-section-title">Moneda</div>
+      <div class="chips-grid">
+        <button class="form-chip" data-filter="moneda" data-val="USD" onclick="setFilter(this)">$ Dólares</button>
+        <button class="form-chip" data-filter="moneda" data-val="CRC" onclick="setFilter(this)">₡ Colones</button>
+      </div>
+      <div class="filter-section-title">Provincia</div>
+      <div class="chips-grid">
+        <button class="form-chip" data-filter="provincia" data-val="San José" onclick="setFilter(this)">San José</button>
+        <button class="form-chip" data-filter="provincia" data-val="Alajuela" onclick="setFilter(this)">Alajuela</button>
+        <button class="form-chip" data-filter="provincia" data-val="Cartago" onclick="setFilter(this)">Cartago</button>
+        <button class="form-chip" data-filter="provincia" data-val="Heredia" onclick="setFilter(this)">Heredia</button>
+        <button class="form-chip" data-filter="provincia" data-val="Guanacaste" onclick="setFilter(this)">Guanacaste</button>
+        <button class="form-chip" data-filter="provincia" data-val="Puntarenas" onclick="setFilter(this)">Puntarenas</button>
+        <button class="form-chip" data-filter="provincia" data-val="Limón" onclick="setFilter(this)">Limón</button>
+      </div>
+      <button class="apply-filter-btn" onclick="applyFilters()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Aplicar filtros
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="auth-modal" onclick="closeOnBackdrop(event,'auth-modal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="auth-logo">
+      <div class="auth-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h2>Rent & Sell</h2>
+      <p>Tu hogar ideal en Costa Rica</p>
+    </div>
+    <div class="modal-body">
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Iniciar sesión</div>
+        <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Crear cuenta</div>
+      </div>
+
+      <!-- Login form -->
+      <div id="login-form">
+        <div class="input-group">
+          <label class="input-label">Correo electrónico</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input class="input-field" id="login-email" type="email" placeholder="tu@correo.com">
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Contraseña</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input class="input-field" id="login-pass" type="password" placeholder="Tu contraseña">
+            <button class="input-eye" onclick="togglePass('login-pass')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="forgot-link"><a href="#">¿Olvidaste tu contraseña?</a></div>
+        <button class="auth-submit" onclick="doLogin()">Ingresar</button>
+      </div>
+
+      <!-- Register form -->
+      <div id="register-form" style="display:none">
+        <div class="input-group">
+          <label class="input-label">Nombre completo *</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input class="input-field" id="reg-nombre" placeholder="Tu nombre">
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Correo electrónico *</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input class="input-field" id="reg-email" type="email" placeholder="tu@correo.com">
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Teléfono / WhatsApp</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.59 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <input class="input-field" id="reg-tel" type="tel" placeholder="88001234">
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Contraseña *</label>
+          <div class="input-with-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input class="input-field" id="reg-pass" type="password" placeholder="Mínimo 6 caracteres">
+            <button class="input-eye" onclick="togglePass('reg-pass')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="terms-row">
+          <div class="checkbox-custom" id="terms-check" onclick="toggleTerms()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="terms-text">Acepto los <a href="#">términos y condiciones</a> y la <a href="#">política de privacidad</a></div>
+        </div>
+        <button class="auth-submit" onclick="doRegister()">Crear mi cuenta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">¡Listo!</span>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA & STATE
+// ═══════════════════════════════════════════════════
+const SAMPLE_PROPS = [
+  { id:1, tipo_operacion:'Venta', tipo_inmueble:'Casa', titulo:'Hermosa casa en Escazú con jardín y piscina', descripcion:'Espectacular residencia ubicada en el corazón de Escazú. Amplio jardín, piscina privada, sistema de seguridad 24 horas, acabados de lujo y vistas hermosas. Excelente vecindario residencial, cerca de centros comerciales y colegios internacionales.', precio:350000, moneda:'USD', provincia:'San José', canton:'Escazú', habitaciones:4, banos:3, parqueos:2, area_m2:280, whatsapp:'50688001234', nombre_publicador:'Carlos Rodríguez', amenidades:['Piscina','Jardín','Seguridad 24h','Balcón'], destacado:true, foto_1:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&auto=format&fit=crop' },
+  { id:2, tipo_operacion:'Alquiler', tipo_inmueble:'Apartamento', titulo:'Apartamento moderno en Sabana Norte, todo incluido', descripcion:'Precioso apartamento en edificio nuevo con gimnasio y vista a la Sabana. Totalmente amueblado, incluye servicios básicos. A pasos del parque y centros comerciales.', precio:1200, moneda:'USD', provincia:'San José', canton:'San José', habitaciones:2, banos:2, parqueos:1, area_m2:85, whatsapp:'50622334455', nombre_publicador:'María Jiménez', amenidades:['Gimnasio','Seguridad 24h','Balcón','Fibra óptica'], destacado:true, foto_1:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&auto=format&fit=crop' },
+  { id:3, tipo_operacion:'Venta', tipo_inmueble:'Terreno', titulo:'Terreno en Tamarindo con vista al mar', descripcion:'Excelente terreno en zona de alto crecimiento, a 800 metros de la playa de Tamarindo. Ideal para construir casa de playa o proyecto turístico. Todos los servicios disponibles.', precio:180000, moneda:'USD', provincia:'Guanacaste', canton:'Santa Cruz', habitaciones:0, banos:0, parqueos:0, area_m2:1200, whatsapp:'50688112233', nombre_publicador:'Inversiones del Pacífico', amenidades:['Vista al mar'], destacado:false, foto_1:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&auto=format&fit=crop' },
+  { id:4, tipo_operacion:'Alquiler', tipo_inmueble:'Casa', titulo:'Casa familiar en Heredia, amplia y segura', descripcion:'Cómoda casa de dos plantas en urbanización cerrada de Heredia. Cerca de escuelas, supermercados y autopista. Barrio tranquilo y seguro, ideal para familias.', precio:900, moneda:'USD', provincia:'Heredia', canton:'Heredia', habitaciones:3, banos:2, parqueos:2, area_m2:180, whatsapp:'50655667788', nombre_publicador:'Jorge Mora', amenidades:['Jardín','Cerca de escuelas'], destacado:false, foto_1:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&auto=format&fit=crop' },
+  { id:5, tipo_operacion:'Venta', tipo_inmueble:'Apartamento', titulo:'Apartamento en Curridabat, proyecto nuevo en preventa', descripcion:'Proyecto de apartamentos en la mejor zona de Curridabat, a 5 minutos de Multiplaza. Áreas sociales, piscina, gimnasio. Entrega estimada. Financiamiento disponible.', precio:120000, moneda:'USD', provincia:'San José', canton:'Curridabat', habitaciones:2, banos:1, parqueos:1, area_m2:65, whatsapp:'50699001122', nombre_publicador:'Constructora Prometeo CR', amenidades:['Piscina','Gimnasio','Seguridad 24h'], destacado:false, foto_1:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop' },
+  { id:6, tipo_operacion:'Alquiler', tipo_inmueble:'Local', titulo:'Local comercial en Alajuela Centro, excelente ubicación', descripcion:'Amplio local en el corazón de Alajuela, perfecto para negocio de ropa, tecnología o restaurante. Alto tráfico peatonal, a pasos del mercado central.', precio:800000, moneda:'CRC', provincia:'Alajuela', canton:'Alajuela', habitaciones:0, banos:1, parqueos:2, area_m2:90, whatsapp:'50644556677', nombre_publicador:'Propiedades Centrales', amenidades:['Seguridad 24h','Fibra óptica'], destacado:false, foto_1:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&auto=format&fit=crop' },
+];
+
+let state = {
+  props: [...SAMPLE_PROPS],
+  filtered: [...SAMPLE_PROPS],
+  favorites: [],
+  filters: {},
+  activeOp: '',
+  activeCat: '',
+  search: '',
+  currentPage: 'home',
+  prevPage: 'home',
+  currentProp: null,
+  user: null,
+  publishForm: { tipo_operacion:'', tipo_inmueble:'', moneda:'USD', amenidades:[] },
+  publishStep: 1,
+  termsChecked: false,
+};
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════
+function navigate(page) {
+  state.prevPage = state.currentPage;
+  state.currentPage = page;
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+
+  if (page === 'home') renderCards();
+  if (page === 'favorites') renderFavorites();
+  if (page === 'profile') renderProfile();
+  if (page === 'publish') { state.publishStep = 1; resetPublishForm(); renderStep(); }
+
+  window.scrollTo(0, 0);
+}
+
+function goBack() {
+  navigate(state.prevPage || 'home');
+}
+
+function goToProfile() {
+  navigate('profile');
+}
+
+// ═══════════════════════════════════════════════════
+// FORMAT HELPERS
+// ═══════════════════════════════════════════════════
+function formatPrecio(precio, moneda) {
+  if (!precio) return 'Precio a convenir';
+  const sym = moneda === 'USD' ? '$' : '₡';
+  if (moneda === 'USD') return sym + Number(precio).toLocaleString('en-US');
+  if (precio >= 1000000) return sym + (precio/1000000).toFixed(1) + 'M';
+  return sym + Number(precio).toLocaleString('es-CR');
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Buenos días 👋';
+  if (h < 18) return 'Buenas tardes 👋';
+  return 'Buenas noches 👋';
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER CARDS
+// ═══════════════════════════════════════════════════
+function renderCards() {
+  document.getElementById('greeting').textContent = getGreeting();
+  applyAllFilters();
+  updateStats();
+  const list = document.getElementById('cards-list');
+
+  if (state.filtered.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <h3>Sin propiedades</h3>
+      <p>No encontramos propiedades con esos filtros. Intenta cambiar la búsqueda.</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = state.filtered.map((p, i) => `
+    <div class="prop-card" style="animation-delay:${i*0.06}s" onclick="openDetail(${p.id})">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${p.foto_1}" alt="${p.titulo}" loading="lazy">
+        <div class="card-gradient"></div>
+        <div class="card-top-tags">
+          <span class="card-tag ${p.tipo_operacion==='Venta'?'tag-venta':'tag-alquiler'}">${p.tipo_operacion}</span>
+          ${p.destacado?'<span class="card-tag tag-destacado"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Destacado</span>':''}
+        </div>
+        <button class="fav-btn ${state.favorites.includes(p.id)?'active':''}" onclick="event.stopPropagation();toggleFav(${p.id},this)">
+          <svg viewBox="0 0 24 24" fill="${state.favorites.includes(p.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="card-price">
+          ${formatPrecio(p.precio, p.moneda)}${p.tipo_operacion==='Alquiler'?'<span class="card-price-per">/mes</span>':''}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-type-row">
+          <span class="card-type">${p.tipo_inmueble}</span>
+        </div>
+        <div class="card-title">${p.titulo}</div>
+        <div class="card-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${p.canton?p.canton+', ':''}${p.provincia}
+        </div>
+        <div class="card-features">
+          ${p.habitaciones>0?`<div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>${p.habitaciones}</div>`:''}
+          ${p.banos>0?`<div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" y1="5" x2="8" y2="7"/><line x1="2" y1="12" x2="22" y2="12"/></svg>${p.banos}</div>`:''}
+          ${p.area_m2>0?`<div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>${p.area_m2}m²</div>`:''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('section-count').textContent = state.filtered.length + ' resultado' + (state.filtered.length!==1?'s':'');
+  document.getElementById('hero-count').textContent = state.filtered.length + ' propiedades disponibles';
+}
+
+function updateStats() {
+  const all = state.props;
+  document.getElementById('stat-total').textContent = all.length;
+  document.getElementById('stat-venta').textContent = all.filter(p=>p.tipo_operacion==='Venta').length;
+  document.getElementById('stat-alquiler').textContent = all.filter(p=>p.tipo_operacion==='Alquiler').length;
+}
+
+function applyAllFilters() {
+  let result = [...state.props];
+
+  if (state.search) result = result.filter(p => p.titulo.toLowerCase().includes(state.search.toLowerCase()) || (p.canton||'').toLowerCase().includes(state.search.toLowerCase()) || p.provincia.toLowerCase().includes(state.search.toLowerCase()));
+  if (state.activeOp) result = result.filter(p => p.tipo_operacion === state.activeOp);
+  if (state.activeCat) result = result.filter(p => p.tipo_inmueble === state.activeCat);
+  if (state.filters.tipo_operacion) result = result.filter(p => p.tipo_operacion === state.filters.tipo_operacion);
+  if (state.filters.tipo_inmueble) result = result.filter(p => p.tipo_inmueble === state.filters.tipo_inmueble);
+  if (state.filters.provincia) result = result.filter(p => p.provincia === state.filters.provincia);
+  if (state.filters.moneda) result = result.filter(p => p.moneda === state.filters.moneda);
+
+  result.sort((a,b) => (b.destacado?1:0) - (a.destacado?1:0));
+  state.filtered = result;
+}
+
+// ═══════════════════════════════════════════════════
+// FILTERS & TABS
+// ═══════════════════════════════════════════════════
+function filterProps() {
+  state.search = document.getElementById('search-input').value;
+  renderCards();
+}
+
+function setOpTab(btn) {
+  state.activeOp = btn.dataset.op;
+  document.querySelectorAll('.op-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+function setCat(btn) {
+  state.activeCat = btn.dataset.cat;
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const label = btn.dataset.cat || 'Todas las propiedades';
+  document.getElementById('section-title').textContent = label === '' ? 'Todas las propiedades' : label + 's';
+  renderCards();
+}
+
+function openFilters() { openModal('filter-modal'); }
+
+function setFilter(btn) {
+  const field = btn.dataset.filter;
+  const val = btn.dataset.val;
+  document.querySelectorAll(`[data-filter="${field}"]`).forEach(b => b.classList.remove('selected'));
+  if (state.filters[field] === val) {
+    delete state.filters[field];
+  } else {
+    state.filters[field] = val;
+    btn.classList.add('selected');
+  }
+}
+
+function clearFilters() {
+  state.filters = {};
+  document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('selected'));
+  updateFilterBadge();
+}
+
+function applyFilters() {
+  updateFilterBadge();
+  closeModal('filter-modal');
+  renderCards();
+}
+
+function updateFilterBadge() {
+  const count = Object.keys(state.filters).length;
+  const badge = document.getElementById('filter-badge');
+  const btn = document.getElementById('filter-btn');
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'flex';
+    btn.classList.add('has-filters');
+  } else {
+    badge.style.display = 'none';
+    btn.classList.remove('has-filters');
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// FAVORITES
+// ═══════════════════════════════════════════════════
+function toggleFav(id, btn) {
+  const idx = state.favorites.indexOf(id);
+  if (idx === -1) {
+    state.favorites.push(id);
+    btn.classList.add('active');
+    btn.querySelector('svg').setAttribute('fill', 'currentColor');
+    showToast('Guardado en favoritos ❤️', 'success');
+  } else {
+    state.favorites.splice(idx, 1);
+    btn.classList.remove('active');
+    btn.querySelector('svg').setAttribute('fill', 'none');
+    showToast('Eliminado de favoritos');
+  }
+  if (state.currentPage === 'favorites') renderFavorites();
+}
+
+function toggleDetailFav() {
+  if (!state.currentProp) return;
+  const id = state.currentProp.id;
+  const idx = state.favorites.indexOf(id);
+  const btn = document.getElementById('detail-fav-btn');
+  if (idx === -1) {
+    state.favorites.push(id);
+    btn.querySelector('svg').setAttribute('fill', 'var(--red)');
+    btn.querySelector('svg').setAttribute('stroke', 'var(--red)');
+    showToast('Guardado en favoritos ❤️', 'success');
+  } else {
+    state.favorites.splice(idx, 1);
+    btn.querySelector('svg').setAttribute('fill', 'none');
+    btn.querySelector('svg').setAttribute('stroke', 'currentColor');
+    showToast('Eliminado de favoritos');
+  }
+}
+
+function renderFavorites() {
+  const list = document.getElementById('fav-list');
+  const favProps = state.props.filter(p => state.favorites.includes(p.id));
+  const count = document.getElementById('fav-count-text');
+  count.textContent = favProps.length + ' ' + (favProps.length===1?'propiedad guardada':'propiedades guardadas');
+
+  if (favProps.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <h3>Sin favoritos aún</h3>
+      <p>Toca el ❤️ en cualquier propiedad para guardarla aquí</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = favProps.map((p,i) => `
+    <div class="prop-card" style="animation-delay:${i*0.06}s" onclick="openDetail(${p.id})">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${p.foto_1}" alt="${p.titulo}" loading="lazy">
+        <div class="card-gradient"></div>
+        <div class="card-top-tags"><span class="card-tag ${p.tipo_operacion==='Venta'?'tag-venta':'tag-alquiler'}">${p.tipo_operacion}</span></div>
+        <button class="fav-btn active" onclick="event.stopPropagation();toggleFav(${p.id},this)">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <div class="card-price">${formatPrecio(p.precio, p.moneda)}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${p.titulo}</div>
+        <div class="card-location">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${p.canton?p.canton+', ':''}${p.provincia}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// DETAIL
+// ═══════════════════════════════════════════════════
+function openDetail(id) {
+  const p = state.props.find(x => x.id === id);
+  if (!p) return;
+  state.currentProp = p;
+  state.prevPage = state.currentPage;
+
+  document.getElementById('detail-main-img').src = p.foto_1;
+  document.getElementById('detail-price').innerHTML = formatPrecio(p.precio, p.moneda) + (p.tipo_operacion==='Alquiler'?'<span class="detail-price-per">/mes</span>':'');
+  document.getElementById('detail-type-tag').textContent = p.tipo_inmueble;
+  document.getElementById('detail-title').textContent = p.titulo;
+  document.getElementById('detail-location-text').textContent = [p.canton, p.provincia].filter(Boolean).join(', ');
+  document.getElementById('detail-desc').textContent = p.descripcion;
+
+  const badges = document.getElementById('detail-badges');
+  badges.innerHTML = `<span class="card-tag ${p.tipo_operacion==='Venta'?'tag-venta':'tag-alquiler'}">${p.tipo_operacion}</span>${p.destacado?'<span class="card-tag tag-destacado">⭐ Destacado</span>':''}`;
+
+  const features = document.getElementById('detail-features');
+  let feats = '';
+  if (p.habitaciones > 0) feats += `<div class="detail-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" style="color:var(--gold);display:block;margin:0 auto 4px"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg><div class="detail-feat-val">${p.habitaciones}</div><div class="detail-feat-label">Habitaciones</div></div>`;
+  if (p.banos > 0) feats += `<div class="detail-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" style="color:var(--gold);display:block;margin:0 auto 4px"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="2" y1="12" x2="22" y2="12"/></svg><div class="detail-feat-val">${p.banos}</div><div class="detail-feat-label">Baños</div></div>`;
+  if (p.parqueos >= 0) feats += `<div class="detail-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" style="color:var(--gold);display:block;margin:0 auto 4px"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><div class="detail-feat-val">${p.parqueos}</div><div class="detail-feat-label">Parqueos</div></div>`;
+  if (p.area_m2 > 0) feats += `<div class="detail-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" style="color:var(--gold);display:block;margin:0 auto 4px"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg><div class="detail-feat-val">${p.area_m2}m²</div><div class="detail-feat-label">Área</div></div>`;
+  features.innerHTML = feats;
+
+  if (p.amenidades && p.amenidades.length > 0) {
+    document.getElementById('detail-amenidades-section').style.display = 'block';
+    document.getElementById('detail-amenidades').innerHTML = p.amenidades.map(a => `<div class="amenidad-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>${a}</div>`).join('');
+  } else {
+    document.getElementById('detail-amenidades-section').style.display = 'none';
+  }
+
+  const pub = p.nombre_publicador || 'Propietario';
+  document.getElementById('publisher-avatar').textContent = pub.charAt(0).toUpperCase();
+  document.getElementById('publisher-name').textContent = pub;
+
+  const isFav = state.favorites.includes(p.id);
+  const favBtn = document.getElementById('detail-fav-btn');
+  favBtn.querySelector('svg').setAttribute('fill', isFav ? 'var(--red)' : 'none');
+  favBtn.querySelector('svg').setAttribute('stroke', isFav ? 'var(--red)' : 'currentColor');
+
+  const numero = p.whatsapp ? '506' + p.whatsapp.replace(/\D/g,'').slice(-8) : '';
+  const msg = encodeURIComponent(`¡Hola! Vi tu propiedad en Rent & Sell: "${p.titulo}" y me interesa más información. 🏠`);
+  document.getElementById('wa-btn').onclick = () => window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
+  document.getElementById('call-btn').onclick = () => window.open(`tel:${p.whatsapp}`, '_self');
+
+  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+  document.getElementById('page-detail').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  window.scrollTo(0, 0);
+}
+
+function shareProperty() {
+  if (!state.currentProp) return;
+  const p = state.currentProp;
+  if (navigator.share) {
+    navigator.share({ title: p.titulo, text: `🏠 ${p.titulo}\n📍 ${p.canton||''}, ${p.provincia}\n💰 ${formatPrecio(p.precio, p.moneda)}\n\nVisto en Rent & Sell CR` });
+  } else {
+    showToast('Link copiado 📋');
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// PUBLISH FORM
+// ═══════════════════════════════════════════════════
+function resetPublishForm() {
+  state.publishForm = { tipo_operacion:'', tipo_inmueble:'', moneda:'USD', amenidades:[] };
+  document.querySelectorAll('.form-chip').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.currency-btn').forEach(b => { b.classList.remove('selected'); if(b.dataset.val==='USD') b.classList.add('selected'); });
+  ['f-titulo','f-descripcion','f-precio','f-habitaciones','f-banos','f-parqueos','f-area','f-canton','f-nombre','f-whatsapp'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+}
+
+const STEP_LABELS = ['Tipo de propiedad', 'Detalles y precio', 'Ubicación y contacto', 'Fotos y amenidades'];
+
+function renderStep() {
+  const s = state.publishStep;
+  document.getElementById('step-subtitle').textContent = STEP_LABELS[s-1];
+  document.getElementById('step-counter').textContent = s + '/4';
+
+  document.querySelectorAll('.step-content').forEach(sc => sc.classList.remove('active'));
+  document.getElementById('s'+s).classList.add('active');
+
+  for (let i=1;i<=4;i++) {
+    const stepEl = document.getElementById('step-'+i);
+    stepEl.classList.remove('active','done');
+    if (i < s) stepEl.classList.add('done');
+    if (i === s) stepEl.classList.add('active');
+    const circle = stepEl.querySelector('.step-circle');
+    if (i < s) circle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg>';
+    else circle.textContent = i;
+  }
+  for (let i=1;i<=3;i++) {
+    const line = document.getElementById('line-'+i);
+    if (line) { line.classList.remove('done'); if(i < s) line.classList.add('done'); }
+  }
+
+  const prev = document.getElementById('btn-prev');
+  const next = document.getElementById('btn-next');
+  const nav = document.getElementById('step-nav');
+
+  prev.style.display = s > 1 ? 'flex' : 'none';
+
+  if (s === 4) {
+    next.outerHTML = `<button class="btn-publish" id="btn-next" onclick="submitPublish()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Publicar ahora
+    </button>`;
+  } else {
+    const btn = document.getElementById('btn-next');
+    if (btn) {
+      btn.className = 'btn-next';
+      btn.id = 'btn-next';
+      btn.onclick = nextStep;
+      btn.innerHTML = 'Continuar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    }
+  }
+}
+
+function nextStep() {
+  const s = state.publishStep;
+  if (s === 1) {
+    if (!state.publishForm.tipo_operacion) { showToast('Selecciona el tipo de operación', 'error'); return; }
+    if (!state.publishForm.tipo_inmueble) { showToast('Selecciona el tipo de inmueble', 'error'); return; }
+  }
+  if (s === 2) {
+    const titulo = document.getElementById('f-titulo').value;
+    const precio = document.getElementById('f-precio').value;
+    if (!titulo || titulo.length < 5) { showToast('El título es muy corto', 'error'); return; }
+    if (!precio) { showToast('Ingresa el precio', 'error'); return; }
+  }
+  if (s === 3) {
+    if (!state.publishForm.provincia) { showToast('Selecciona una provincia', 'error'); return; }
+    if (!document.getElementById('f-whatsapp').value) { showToast('Ingresa tu número de WhatsApp', 'error'); return; }
+  }
+  if (s < 4) { state.publishStep++; renderStep(); window.scrollTo(0,0); }
+}
+
+function prevStep() {
+  if (state.publishStep > 1) { state.publishStep--; renderStep(); window.scrollTo(0,0); }
+}
+
+function selectChip(btn) {
+  const field = btn.dataset.field;
+  const val = btn.dataset.val;
+  document.querySelectorAll(`[data-field="${field}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.publishForm[field] = val;
+}
+
+function toggleAmenidad(btn) {
+  const val = btn.dataset.val;
+  if (state.publishForm.amenidades.includes(val)) {
+    state.publishForm.amenidades = state.publishForm.amenidades.filter(a => a !== val);
+    btn.classList.remove('selected');
+  } else {
+    state.publishForm.amenidades.push(val);
+    btn.classList.add('selected');
+  }
+}
+
+function setCurrency(btn) {
+  document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.publishForm.moneda = btn.dataset.val;
+}
+
+function addPhoto(slot) {
+  const urls = [
+    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&auto=format&fit=crop',
+  ];
+  const el = document.getElementById('photo-' + slot);
+  const url = urls[slot % urls.length];
+  el.innerHTML = `<img src="${url}" alt="foto">
+    ${slot===0?'<div class="photo-main-badge">Principal</div>':''}
+    <button class="photo-remove" onclick="event.stopPropagation();removePhoto(${slot})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>`;
+  state.publishForm['foto_' + (slot+1)] = url;
+}
+
+function removePhoto(slot) {
+  const el = document.getElementById('photo-' + slot);
+  const icons = [`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Agregar</span>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Foto 2</span>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Foto 3</span>`];
+  el.innerHTML = icons[slot];
+  el.onclick = () => addPhoto(slot);
+  delete state.publishForm['foto_' + (slot+1)];
+}
+
+function submitPublish() {
+  const newProp = {
+    id: Date.now(),
+    tipo_operacion: state.publishForm.tipo_operacion,
+    tipo_inmueble: state.publishForm.tipo_inmueble,
+    titulo: document.getElementById('f-titulo').value,
+    descripcion: document.getElementById('f-descripcion').value,
+    precio: parseFloat(document.getElementById('f-precio').value) || 0,
+    moneda: state.publishForm.moneda,
+    provincia: state.publishForm.provincia,
+    canton: document.getElementById('f-canton').value,
+    habitaciones: parseInt(document.getElementById('f-habitaciones').value) || 0,
+    banos: parseInt(document.getElementById('f-banos').value) || 0,
+    parqueos: parseInt(document.getElementById('f-parqueos').value) || 0,
+    area_m2: parseFloat(document.getElementById('f-area').value) || 0,
+    whatsapp: document.getElementById('f-whatsapp').value,
+    nombre_publicador: document.getElementById('f-nombre').value || (state.user?.nombre || 'Propietario'),
+    amenidades: [...state.publishForm.amenidades],
+    destacado: false,
+    foto_1: state.publishForm.foto_1 || 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&auto=format&fit=crop',
+    foto_2: state.publishForm.foto_2 || null,
+    foto_3: state.publishForm.foto_3 || null,
+  };
+
+  state.props.unshift(newProp);
+  if (state.user) {
+    if (!state.user.listings) state.user.listings = [];
+    state.user.listings.unshift(newProp);
+  }
+
+  showToast('¡Propiedad publicada! 🎉', 'success');
+  setTimeout(() => navigate('home'), 1000);
+}
+
+// ═══════════════════════════════════════════════════
+// PROFILE
+// ═══════════════════════════════════════════════════
+function renderProfile() {
+  if (!state.user) {
+    document.getElementById('profile-not-auth').style.display = 'block';
+    document.getElementById('profile-auth').style.display = 'none';
+    return;
+  }
+  document.getElementById('profile-not-auth').style.display = 'none';
+  document.getElementById('profile-auth').style.display = 'block';
+
+  const u = state.user;
+  document.getElementById('profile-avatar-text').textContent = (u.nombre||'U').charAt(0).toUpperCase();
+  document.getElementById('profile-name-text').textContent = u.nombre || 'Usuario';
+  document.getElementById('profile-email-text').textContent = u.email || '';
+
+  const myListings = (u.listings || []);
+  document.getElementById('pstat-total').textContent = myListings.length;
+  document.getElementById('pstat-activos').textContent = myListings.length;
+  document.getElementById('pstat-destacados').textContent = myListings.filter(p=>p.destacado).length;
+
+  const ml = document.getElementById('my-listings');
+  if (myListings.length === 0) {
+    ml.innerHTML = `<div style="text-align:center;padding:30px;color:var(--gray)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" style="margin:0 auto 10px;color:var(--light)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <p style="font-size:14px">Aún no has publicado nada</p>
+    </div>`;
+  } else {
+    ml.innerHTML = myListings.map(p => `
+      <div class="my-listing-card" onclick="openDetail(${p.id})">
+        <img class="my-listing-img" src="${p.foto_1}" alt="">
+        <div class="my-listing-info">
+          <span class="my-listing-tag" style="background:${p.tipo_operacion==='Venta'?'var(--gold)':'var(--navy-mid)'}">${p.tipo_operacion}</span>
+          <div class="my-listing-title">${p.titulo}</div>
+          <div class="my-listing-price">${formatPrecio(p.precio, p.moneda)}</div>
+          <div class="my-listing-location">${p.canton?p.canton+', ':''}${p.provincia}</div>
+        </div>
+        <div class="my-listing-delete" onclick="event.stopPropagation();deleteListing(${p.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function deleteListing(id) {
+  if (!confirm('¿Eliminar este anuncio?')) return;
+  state.props = state.props.filter(p => p.id !== id);
+  if (state.user && state.user.listings) state.user.listings = state.user.listings.filter(p => p.id !== id);
+  renderProfile();
+  showToast('Anuncio eliminado');
+}
+
+function logout() {
+  if (!confirm('¿Cerrar sesión?')) return;
+  state.user = null;
+  showToast('Sesión cerrada');
+  renderProfile();
+}
+
+// ═══════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════
+function openAuth(tab) { openModal('auth-modal'); switchAuthTab(tab||'login'); }
+
+function switchAuthTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab==='login');
+  document.getElementById('tab-register').classList.toggle('active', tab==='register');
+  document.getElementById('login-form').style.display = tab==='login'?'block':'none';
+  document.getElementById('register-form').style.display = tab==='register'?'block':'none';
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value;
+  const pass = document.getElementById('login-pass').value;
+  if (!email || !pass) { showToast('Completa todos los campos', 'error'); return; }
+
+  state.user = { nombre: email.split('@')[0], email, listings: [] };
+  closeModal('auth-modal');
+  showToast('¡Bienvenido! 👋', 'success');
+  renderProfile();
+}
+
+function doRegister() {
+  const nombre = document.getElementById('reg-nombre').value;
+  const email = document.getElementById('reg-email').value;
+  const pass = document.getElementById('reg-pass').value;
+  if (!nombre || !email || !pass) { showToast('Completa todos los campos', 'error'); return; }
+  if (pass.length < 6) { showToast('La contraseña es muy corta', 'error'); return; }
+  if (!state.termsChecked) { showToast('Acepta los términos', 'error'); return; }
+
+  state.user = { nombre, email, listings: [] };
+  closeModal('auth-modal');
+  showToast('¡Cuenta creada! 🎉', 'success');
+  renderProfile();
+}
+
+function toggleTerms() {
+  state.termsChecked = !state.termsChecked;
+  const el = document.getElementById('terms-check');
+  el.classList.toggle('checked', state.termsChecked);
+  el.querySelector('svg').style.display = state.termsChecked ? 'block' : 'none';
+}
+
+function togglePass(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+// ═══════════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+function closeOnBackdrop(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+
+// ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  const m = document.getElementById('toast-msg');
+  t.className = 'toast' + (type?' '+type:'');
+  m.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderCards();
+  updateStats();
+});
+</script>
+</body>
+</html>
